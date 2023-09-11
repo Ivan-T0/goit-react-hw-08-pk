@@ -1,0 +1,34 @@
+.contactList {
+    list-style: none;
+    padding: 0;
+}
+
+.contactItem {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+.contactName {
+    font-weight: bold;
+}
+
+.contactPhone {
+    color: #555;
+}
+
+.deleteButton {
+    margin-top: 10px;
+    margin-left: 5px;
+    background-color: #ff5252;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.deleteButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
