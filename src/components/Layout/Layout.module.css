@@ -1,0 +1,25 @@
+ul{
+    text-decoration: none;
+    list-style: none;
+}
+.list{
+    
+    display: flex;
+    justify-content: space-between;
+}
+.list_link{
+    text-decoration: none;
+    font-size: 50px ;
+    color: black;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+}
+.list_link:hover{
+    color: blue;
+    
+    
+}
+/* .link.active {
+    color: tomato;
+} */

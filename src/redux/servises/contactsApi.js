@@ -3,10 +3,36 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const contactsApi = createApi({
   reducerPath: 'contactsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://64f8af5f824680fd217fef6e.mockapi.io/contacts/',
+    baseUrl: 'https://connections-api.herokuapp.com',
   }),
   tagTypes: ['Contact'],
   endpoints: builder => ({
+    // Операція для логіну
+    login: builder.mutation({
+      query: (newContact) => ({
+        url: '/users/login', // Замініть це на правильний URL для логіну
+        method: 'POST',
+        body: {
+          email: newContact.email,
+        password: newContact.password,},
+      }),
+    }),
+
+    // Операція для реєстрації
+    register: builder.mutation({
+      query: newContact => ({
+    url: '/users/signup',
+    method: 'POST',
+    body: {
+      name: newContact.name,
+      email: newContact.email, // Убедитесь, что поле email присутствует
+      password: newContact.password,
+    },
+  }),
+  invalidatesTags: ['Contact'],
+    }),
+
+    // Решта операцій, які ви вже визначили
     getContactByName: builder.query({
       query: () => '/contacts',
       providesTags: ['Contact'],
@@ -20,12 +46,22 @@ export const contactsApi = createApi({
     }),
     createContact: builder.mutation({
       query: newContact => ({
-        url: '/contacts',
-        method: 'POST',
-        body: newContact,
-      }),
-      invalidatesTags: ['Contact'],
-    }),
+    url: '/users/signup',
+    method: 'POST',
+    body: {
+      name: newContact.name,
+      email: newContact.email, // Убедитесь, что поле email присутствует
+      password: newContact.password,
+    },
+  }),
+  invalidatesTags: ['Contact'],
+}),
+     logout: builder.mutation({
+      query: () => ({
+        url: '/logout', // Замените на правильный URL для выхода
+        method: 'POST', // Используйте метод, который подходит для вашего API
+       }),
+       }),
   }),
 });
 
@@ -33,4 +69,7 @@ export const {
   useGetContactByNameQuery,
   useDeleteContactMutation,
   useCreateContactMutation,
+  useLoginMutation, // Додайте цю операцію
+  useRegisterMutation,
+  useLogoutMutation,// Додайте цю операцію
 } = contactsApi;

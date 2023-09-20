@@ -1,5 +1,8 @@
 import cl from './ContactForm.module.css';
 import { useCreateContactMutation } from '../../redux/servises/contactsApi';
+import { startTransition } from 'react';
+
+
 
 const ContactForm = () => {
   const [newContact, { isLoading: isDeleting }] = useCreateContactMutation();
@@ -11,11 +14,14 @@ const ContactForm = () => {
 
     e.currentTarget.reset();
     try {
-      await newContact({ name, phone });
+       startTransition(() => {
+        newContact({ name, phone });
+      });
     } catch (error) {
       console.log(error);
     }
   };
+  
 
   return (
     <div>
@@ -44,6 +50,8 @@ const ContactForm = () => {
           {isDeleting ? 'Loading...' : 'Add Contact'}
         </button>
       </form>
+       
+      
     </div>
   );
 };
