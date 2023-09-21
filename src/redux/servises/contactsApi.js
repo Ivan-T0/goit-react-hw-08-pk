@@ -1,9 +1,27 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+// import { setUserAndToken, clearUserAndToken } from './authSlice';
 
+const getTokenFromState = (state) => {
+  if (state && state.auth && state.auth.token) {
+    return state.auth.token;
+  }
+  return null; // или какое-то значение по умолчанию, если токен не найден
+};
 export const contactsApi = createApi({
   reducerPath: 'contactsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://connections-api.herokuapp.com',
+    prepareHeaders: (headers, { getState }) => {
+      // Получите токен из состояния
+      const token = getTokenFromState(getState());
+
+      // Если есть токен, добавьте его к заголовку Authorization
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+
+      return headers;
+    },
   }),
   tagTypes: ['Contact'],
   endpoints: builder => ({
@@ -46,12 +64,12 @@ export const contactsApi = createApi({
     }),
     createContact: builder.mutation({
       query: newContact => ({
-    url: '/users/signup',
+    url: '/contacts',
     method: 'POST',
     body: {
       name: newContact.name,
-      email: newContact.email, // Убедитесь, что поле email присутствует
-      password: newContact.password,
+      number: newContact.phone, // Убедитесь, что поле email присутствует
+      
     },
   }),
   invalidatesTags: ['Contact'],

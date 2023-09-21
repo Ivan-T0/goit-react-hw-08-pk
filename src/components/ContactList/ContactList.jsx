@@ -1,5 +1,5 @@
 import cl from '../ContactList/ContactList.module.css'
-import { getContacts, getFilter } from 'redux/selectors';
+import {  getFilter } from 'redux/selectors';
 import { useSelector } from 'react-redux';
 import { useDeleteContactMutation } from '../../redux/servises/contactsApi'
 import { useGetContactByNameQuery } from '../../redux/servises/contactsApi'
@@ -8,8 +8,13 @@ import { useGetContactByNameQuery } from '../../redux/servises/contactsApi'
 const ContactList = () => {
   const filter = useSelector(getFilter);
   const [deleteContact, { isLoading }] = useDeleteContactMutation()
-  const { data } = useGetContactByNameQuery(getContacts)
-  
+  const token = useSelector(state => state.auth?.token); // Получите токен из состояния Redux
+  const { data } = useGetContactByNameQuery(null, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Добавьте токен в заголовки запроса
+    },
+  });
+
    
   const getFilteredContacts = () => {
     const normalizedFilter = filter.toLowerCase();
